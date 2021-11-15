@@ -3,7 +3,7 @@
 
 This repository contains the following approximation algorithms for the Graph Burning Problem.
 
-|  Algorithm |                                          Complexity                               | <img src="https://render.githubusercontent.com/render/math?math=\rho">| keywork
+|  Algorithm |                                          Complexity                               | <img src="https://render.githubusercontent.com/render/math?math=\rho">| keyword
 |------------|-----------------------------------------------------------------------------------| -|-
 | BFF        | <img src="https://render.githubusercontent.com/render/math?math=O(n^3)">          | <img src="https://render.githubusercontent.com/render/math?math=3-2/b(G)">| bff
 | BFF+       | <img src="https://render.githubusercontent.com/render/math?math=O(n^3)">          | <img src="https://render.githubusercontent.com/render/math?math=3-2/b(G)">| bff+
