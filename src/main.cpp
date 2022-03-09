@@ -13,7 +13,7 @@ using namespace boost;
 using namespace std;
 
 
-int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
+int **computeAllShortestPaths2(vector<pair<int, int>> &edges_vec, int n) {
     const int m = edges_vec.size();
 
     typedef adjacency_list<vecS, vecS, undirectedS, no_property,
@@ -44,6 +44,36 @@ int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
     return D;
 }
 
+int **computeAllShortestPaths(vector<vector<int>> &adj, int n) {
+
+    int **D = new int *[n];
+    for (int i = 0; i < n; ++i) {
+        D[i] = new int[n];
+        fill(D[i], D[i] + n, std::numeric_limits<int>::max());
+        D[i][i] = 0;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        queue<int> q;
+        vector<bool> visited(n);
+        q.push(i);
+        visited[i] = true;
+        while (!q.empty()) {
+            int s = q.front();
+            q.pop();
+            for (auto u: adj[s]) {
+                if (!visited[u]) {
+                    D[i][u] = D[i][s] + 1;
+                    visited[u] = true;
+                    q.push(u);
+                }
+            }
+        }
+    }
+
+    return D;
+}
+
 int main(int argc, char **argv) {
 
     string input_file = argv[1];
@@ -53,10 +83,22 @@ int main(int argc, char **argv) {
     vector<pair<int, int>> edges_vec;
     int n;
     tie(edges_vec, n) = FileUtil::load_graph(input_file);
+    vector<vector<int>> adj = AlgUtils::createAdjList(edges_vec, n);
 
     // time of compute all shortest paths
     clock_t begin = clock();
-    int **D = computeAllShortestPaths(edges_vec, n);
+    int **D = computeAllShortestPaths(adj, n);
+//    int **D2 = computeAllShortestPaths2(edges_vec, n);
+//    for (int i = 0; i < n; ++i) {
+//        for (int j = 0; j < n; ++j) {
+//            if(D[i][j]!=D2[i][j]){
+//                cout<<D[i][j]<<endl;
+//                cout<<D2[i][j]<<endl;
+//                int a = 1;
+//            }
+//
+//        }
+//    }
     clock_t end = clock();
     double time_casp = (double) (end - begin) / CLOCKS_PER_SEC;
     // end computations of all shortest paths
