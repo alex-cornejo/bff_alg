@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -11,9 +12,10 @@
 
 using namespace boost;
 using namespace std;
+using namespace std::chrono;
 
 
-int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
+int **computeAllShortestPaths2(vector<pair<int, int>> &edges_vec, int n) {
     const int m = edges_vec.size();
 
     typedef adjacency_list<vecS, vecS, undirectedS, no_property,
@@ -44,6 +46,36 @@ int **computeAllShortestPaths(vector<pair<int, int>> &edges_vec, int n) {
     return D;
 }
 
+int **computeAllShortestPaths(vector<vector<int>> &adj, int n) {
+
+    int **D = new int *[n];
+    for (int i = 0; i < n; ++i) {
+        D[i] = new int[n];
+        fill(D[i], D[i] + n, n);
+        D[i][i] = 0;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        queue<int> q;
+        vector<bool> visited(n);
+        q.push(i);
+        visited[i] = true;
+        while (!q.empty()) {
+            int s = q.front();
+            q.pop();
+            for (auto u: adj[s]) {
+                if (!visited[u]) {
+                    D[i][u] = D[i][s] + 1;
+                    visited[u] = true;
+                    q.push(u);
+                }
+            }
+        }
+    }
+
+    return D;
+}
+
 int main(int argc, char **argv) {
 
     string input_file = argv[1];
@@ -53,34 +85,38 @@ int main(int argc, char **argv) {
     vector<pair<int, int>> edges_vec;
     int n;
     tie(edges_vec, n) = FileUtil::load_graph(input_file);
+    vector<vector<int>> adj = AlgUtils::createAdjList(edges_vec, n);
 
     // time of compute all shortest paths
-    clock_t begin = clock();
-    int **D = computeAllShortestPaths(edges_vec, n);
-    clock_t end = clock();
-    double time_casp = (double) (end - begin) / CLOCKS_PER_SEC;
+    auto start = high_resolution_clock::now();
+    int **D = computeAllShortestPaths(adj, n);
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    double time_APSP = duration.count() / (double) 1000;
     // end computations of all shortest paths
-    cout << "Compute all shortest paths running time: " << time_casp << " seconds" << endl;
+    cout << "Compute all shortest paths running time: " << time_APSP << " seconds" << endl;
 
     // time of algorithm
     vector<int> f;
-    begin = clock();
+    start = high_resolution_clock::now();
 
     if (alg == "bon") {
         BonSolver solver(n, D);
         f = solver.run();
     } else if (alg == "bff") {
-        BFFSolver solver(n, D, edges_vec);
+        BFFSolver solver(n, D, adj);
         f = solver.run();
     } else if (alg == "bff+") {
-        BFFSolver solver(n, D, edges_vec);
+        BFFSolver solver(n, D, adj);
         solver.setPlus(true);
         f = solver.run();
     } else {
         cerr << "Invalid algorithm!" << endl;
     }
-    end = clock();
-    double time_alg = (double) (end - begin) / CLOCKS_PER_SEC;
+    stop = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(stop - start);
+    double time_alg = duration.count() / (double) 1000;
 
     // print computations times and solution
     cout << "Algorithm running time: " << time_alg << " seconds" << endl;

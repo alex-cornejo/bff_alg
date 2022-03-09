@@ -27,7 +27,7 @@ private:
 
 public:
 
-    BFFSolver(int n, int **D, std::vector<std::pair<int, int>>& edges);
+    BFFSolver(int n, int **D, std::vector<std::vector<int>>& adj);
 
     std::vector<int> run();
 

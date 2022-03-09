@@ -8,11 +8,10 @@
 
 using namespace std;
 
-BFFSolver::BFFSolver(const int n, int **D, vector<pair<int, int>> &edges) : n(n), D(D) {
+BFFSolver::BFFSolver(const int n, int **D, vector<vector<int>> &adj) : n(n), D(D), adj(adj) {
     plus = false;
     D2S.resize(n);
     burned.resize(n);
-    adj = AlgUtils::createAdjList(edges, n);
 }
 
 void BFFSolver::init() {
