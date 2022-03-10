@@ -67,5 +67,5 @@ Algorithm running time: 0.046875 seconds
 
 # Contact
 * jesus.garcia@conacyt.mx
-* alexcornejo@inaoep.mx
+* alexcornejo@inaoe.edu.mx
 
