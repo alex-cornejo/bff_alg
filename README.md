@@ -1,4 +1,19 @@
 # Burning Farthest-First algorithm
+
+## Citing
+### BibTex
+```
+@ARTICLE{bff2022,  
+author={García-Díaz, Jesús and Pérez-Sansalvador, Julio César and Rodríguez-Henríquez, Lil María Xibai and Cornejo-Acosta, José Alejandro},  
+journal={IEEE Access},   
+title={Burning Graphs Through Farthest-First Traversal},   
+year={2022}, 
+volume={10},  
+number={},  
+pages={30395-30404},  
+doi={10.1109/ACCESS.2022.3159695}}
+```
+
 ## An approximation algorithm for the graph burning problem
 
 This repository contains the following approximation algorithms for the Graph Burning Problem.
