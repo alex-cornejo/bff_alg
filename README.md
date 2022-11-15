@@ -35,7 +35,8 @@ sudo apt install cmake
 ```
 
 ## Compile program
-(the final dot is important)
+Run the following commands inside the folder of the downloaded project.
+The final dot is important.
 ```
 cmake -DCMAKE_BUILD_TYPE=Release .
 cmake --build .
