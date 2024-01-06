@@ -83,6 +83,6 @@ Algorithm running time: 0.046875 seconds
 ```
 
 # Contact
-* jesus.garcia@conacyt.mx
+* jesus.garcia@conahcyt.mx
 * alexcornejo@inaoe.edu.mx
 
